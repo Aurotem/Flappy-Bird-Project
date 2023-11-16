@@ -13,8 +13,32 @@ body {
   height: 100dvh;
   overflow: hidden;
 }
+#game-start {
+  background: url('./images/message.png');
+  position: absolute;
+  height: 168px;
+  width: 184px;
+  top: 20%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  z-index: 10;
+}
+#game-over {
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  background: url('./images/gameover.png');
+  width: 192px;
+  height: 42px;
+  z-index: 10;
+  display: none;
+}
 #SCORE {
   color: white;
+  position: absolute;
+  top: 50px;
+  left: 50%;
 }
 #game-overlay {
   position: relative;
@@ -22,6 +46,11 @@ body {
   height: 512px;
   width: 350px;
   overflow: hidden;
+}
+.score-img {
+  width: 24px;
+  height: 36px;
+  z-index: 10;
 }
 
 #bird {

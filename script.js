@@ -19,6 +19,10 @@ scenery.appendChild(ground);
 scenery.appendChild(ground2);
 scenery.appendChild(ground3);
 
+//! Game Start & Game Stop Signs
+const gameStart = document.getElementById("game-start");
+const gameOver = document.getElementById("game-over");
+
 //! ------------------PLAYER SCORE---------------------
 let SCORE = 0;
 const score = document.getElementById("SCORE");
@@ -26,7 +30,6 @@ const score = document.getElementById("SCORE");
 //TODO -------------------------START GAME----------------------------------------
 let gameRun = false;
 function createItems() {
-  gameRun = true;
   //! Activating animations
   ground.classList.add("ground-animation");
   ground2.classList.add("ground-animation");
@@ -52,64 +55,82 @@ function createItems() {
   scenery.appendChild(pipe);
   scenery.appendChild(pipe2);
 
-  let itemsPos = -100;
-  let playerPass = false;
-  const moveItems = setInterval(() => {
-    if (gameRun) {
-      pipe.style.right = itemsPos + "px";
-      pipe2.style.right = itemsPos + "px";
-      itemsPos += 50;
-    }
-    if (itemsPos > 512) {
-      pipe.remove();
-      pipe2.remove();
-      clearInterval(moveItems);
-    }
-    if (itemsPos >= 256 && itemsPos <= 300) {
-      playerPass = true;
-      if (playerPass) {
-        SCORE += 1;
-        playerPass = false;
-      }
-      score.textContent = SCORE;
-    }
-  }, 500);
+  if (gameRun) {
+    let itemsPos = -100;
+    let playerPass = false;
+    const moveItems = setInterval(() => {
+      if (gameRun) {
+        pipe.style.right = itemsPos + "px";
+        pipe2.style.right = itemsPos + "px";
+        itemsPos += 50;
 
-  cl(SCORE);
+        if (itemsPos > 512) {
+          pipe.remove();
+          pipe2.remove();
+          clearInterval(moveItems);
+        }
+        if (itemsPos >= 256 && itemsPos <= 300) {
+          if (bird) playerPass = true;
+          if (playerPass) {
+            SCORE += 5;
+            playerPass = false;
+          }
+          Array.from(String(SCORE)).forEach((e) => {
+                let clearAble = false;
+            const img = document.createElement("img");
+            if (score.childElementCount != 0) {
+              score.removeChild(score.lastChild);
+            }
+            img.classList.add("score-img");
+            img.src = `./images/${e}.png`;
+            score.appendChild(img);
+          });
+        }
+      }
+    }, 500);
+  }
 }
+
 const createItemsInterval = setInterval(createItems, 2000);
 
 let birdStart = 200;
 let birdMoveTo = 0;
 function moveBird() {
-  if (birdStart < 382) {
-    bird.style.top = birdStart + "px";
-    birdMoveTo <= 7 ? (birdMoveTo += 1) : false;
-    birdStart += birdMoveTo;
-    if (birdMoveTo >= 6) {
-      bird.style.transform = "rotate(35deg)";
-    } else if (birdMoveTo <= 5) {
-      bird.style.transform = "rotate(-35deg)";
+  if (gameRun) {
+    gameStart.style.display = "none";
+    if (birdStart < 382) {
+      bird.style.top = birdStart + "px";
+      birdMoveTo <= 7 ? (birdMoveTo += 1) : false;
+      birdStart += birdMoveTo;
+      if (birdMoveTo >= 6) {
+        bird.style.transform = "rotate(35deg)";
+      } else if (birdMoveTo <= 5) {
+        bird.style.transform = "rotate(-35deg)";
+      }
+    } else {
+      //! ------------Ground hit handler--------------
+      clearInterval(createItemsInterval); //* Stops the generation of the pipes.
+      gameRun = false; //* Stops the movement of the pipes.
+      //*Deactivating animations
+      ground.classList.remove("ground-animation");
+      ground2.classList.remove("ground-animation");
+      ground3.classList.remove("ground-animation");
+      bird.classList.remove("bird-animation");
+      gameOver.style.display = "block";
     }
-  } else {
-    //! ------------Ground hit handler--------------
-    clearInterval(createItemsInterval); //* Stops the generation of the pipes.
-    gameRun = false; //* Stops the movement of the pipes.
-    //*Deactivating animations
-    ground.classList.remove("ground-animation");
-    ground2.classList.remove("ground-animation");
-    ground3.classList.remove("ground-animation");
-    bird.classList.remove("bird-animation");
   }
 }
 
 //! Bird Jump Inputs
-window.addEventListener("click", birdJump);
-window.addEventListener("keydown", (e) => e.keyCode == 32 && birdJump);
+window.addEventListener("click", () => (gameRun ? birdJump() : activateGame()));
 
 //*Jump function
 function birdJump() {
   birdMoveTo = -9;
+}
+function activateGame() {
+  gameRun = true;
+  birdJump();
 }
 
 setInterval(moveBird, 20);
