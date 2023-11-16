@@ -19,12 +19,19 @@ scenery.appendChild(ground);
 scenery.appendChild(ground2);
 scenery.appendChild(ground3);
 
+//! ------------------PLAYER SCORE---------------------
+let SCORE = 0;
+const score = document.getElementById("SCORE");
+
 //TODO -------------------------START GAME----------------------------------------
+let gameRun = false;
 function createItems() {
-  //! Activating ground animation
-  ground.style.animation = "move 3.4s infinite linear";
-  ground2.style.animation = "move 3.4s infinite linear";
-  ground3.style.animation = "move 3.4s infinite linear";
+  gameRun = true;
+  //! Activating animations
+  ground.classList.add("ground-animation");
+  ground2.classList.add("ground-animation");
+  ground3.classList.add("ground-animation");
+  bird.classList.add("bird-animation");
 
   //! Random number for generating pipes.
   const randomPos = Math.random() * (372 - 132) + 132;
@@ -46,16 +53,29 @@ function createItems() {
   scenery.appendChild(pipe2);
 
   let itemsPos = -100;
+  let playerPass = false;
   const moveItems = setInterval(() => {
-    pipe.style.right = itemsPos + "px";
-    pipe2.style.right = itemsPos + "px";
-    itemsPos += 50;
+    if (gameRun) {
+      pipe.style.right = itemsPos + "px";
+      pipe2.style.right = itemsPos + "px";
+      itemsPos += 50;
+    }
     if (itemsPos > 512) {
       pipe.remove();
       pipe2.remove();
       clearInterval(moveItems);
     }
+    if (itemsPos >= 256 && itemsPos <= 300) {
+      playerPass = true;
+      if (playerPass) {
+        SCORE += 1;
+        playerPass = false;
+      }
+      score.textContent = SCORE;
+    }
   }, 500);
+
+  cl(SCORE);
 }
 const createItemsInterval = setInterval(createItems, 2000);
 
@@ -64,21 +84,32 @@ let birdMoveTo = 0;
 function moveBird() {
   if (birdStart < 382) {
     bird.style.top = birdStart + "px";
-    birdMoveTo <= 8 ? (birdMoveTo += 1) : false;
+    birdMoveTo <= 7 ? (birdMoveTo += 1) : false;
     birdStart += birdMoveTo;
-    if(birdMoveTo >= 7) {
-                bird.style.transform= 'rotate(35deg)';
-    }else if(birdMoveTo <= 0) {
-                bird.style.transform= 'rotate(-35deg)';
+    if (birdMoveTo >= 6) {
+      bird.style.transform = "rotate(35deg)";
+    } else if (birdMoveTo <= 5) {
+      bird.style.transform = "rotate(-35deg)";
     }
-  }else {
-                clearInterval(createItemsInterval)
+  } else {
+    //! ------------Ground hit handler--------------
+    clearInterval(createItemsInterval); //* Stops the generation of the pipes.
+    gameRun = false; //* Stops the movement of the pipes.
+    //*Deactivating animations
+    ground.classList.remove("ground-animation");
+    ground2.classList.remove("ground-animation");
+    ground3.classList.remove("ground-animation");
+    bird.classList.remove("bird-animation");
   }
 }
 
-window.addEventListener('click', birdJump)
+//! Bird Jump Inputs
+window.addEventListener("click", birdJump);
+window.addEventListener("keydown", (e) => e.keyCode == 32 && birdJump);
+
+//*Jump function
 function birdJump() {
-                birdMoveTo = -10;
+  birdMoveTo = -9;
 }
 
 setInterval(moveBird, 20);

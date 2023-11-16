@@ -9,8 +9,12 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
   height: 100dvh;
   overflow: hidden;
+}
+#SCORE {
+  color: white;
 }
 #game-overlay {
   position: relative;
@@ -28,51 +32,57 @@ body {
   height: 24px;
   background: url(./images/yellowbird-downflap.png) no-repeat;
   background-size: cover;
-  transition: transform .05s linear;
-  animation: flap .5s infinite;
+  transition: transform 0.05s linear;
+}
+
+.bird-animation {
+  animation: flap 0.5s infinite;
 }
 @keyframes flap {
   0% {
-    background: url('./images/redbird-midflap.png');
+    background: url("./images/yellowbird-midflap.png");
   }
   25% {
-    background: url('./images/redbird-downflap.png');
+    background: url("./images/yellowbird-downflap.png");
   }
   50% {
-    background: url('./images/redbird-midflap.png');
+    background: url("./images/yellowbird-midflap.png");
   }
   75% {
-    background: url('./images/redbird-upflap.png');
+    background: url("./images/yellowbird-upflap.png");
   }
   100% {
-    background: url('./images/redbird-midflap.png');
+    background: url("./images/yellowbird-midflap.png");
   }
 }
 
-
-.pipe{
+.pipe {
   position: absolute;
   transform-origin: center center;
   right: -100px;
   height: 320px;
   width: 52px;
-  background: url('./images/pipe-green.png');
-  transition: .6s linear;
+  background: url("./images/pipe-green.png");
+  transition: 0.6s linear;
 }
-.ground{
+.ground {
   position: absolute;
   height: 112px;
   width: 336px;
-  background: url('./images/base.png');
+  background: url("./images/base.png");
   bottom: 0px;
   z-index: 2;
   transform-origin: center right;
 }
-@keyframes move{
-from{
-  transform:  translateX(0px);
+.ground-animation {
+  animation: move 3.4s infinite linear;
 }
-to {
-  transform:  translateX(-100%);
-}
+
+@keyframes move {
+  from {
+    transform: translateX(0px);
+  }
+  to {
+    transform: translateX(-100%);
+  }
 }
