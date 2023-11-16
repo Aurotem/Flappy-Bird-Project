@@ -1,0 +1,78 @@
+/* Reset Values */
+* {
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+}
+body {
+  background-color: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100dvh;
+  overflow: hidden;
+}
+#game-overlay {
+  position: relative;
+  background: url(./images/background-day.png) repeat-x;
+  height: 512px;
+  width: 350px;
+  overflow: hidden;
+}
+
+#bird {
+  position: absolute;
+  top: 200px;
+  left: 40%;
+  width: 34px;
+  height: 24px;
+  background: url(./images/yellowbird-downflap.png) no-repeat;
+  background-size: cover;
+  transition: transform .05s linear;
+  animation: flap .5s infinite;
+}
+@keyframes flap {
+  0% {
+    background: url('./images/redbird-midflap.png');
+  }
+  25% {
+    background: url('./images/redbird-downflap.png');
+  }
+  50% {
+    background: url('./images/redbird-midflap.png');
+  }
+  75% {
+    background: url('./images/redbird-upflap.png');
+  }
+  100% {
+    background: url('./images/redbird-midflap.png');
+  }
+}
+
+
+.pipe{
+  position: absolute;
+  transform-origin: center center;
+  right: -100px;
+  height: 320px;
+  width: 52px;
+  background: url('./images/pipe-green.png');
+  transition: .6s linear;
+}
+.ground{
+  position: absolute;
+  height: 112px;
+  width: 336px;
+  background: url('./images/base.png');
+  bottom: 0px;
+  z-index: 2;
+  transform-origin: center right;
+}
+@keyframes move{
+from{
+  transform:  translateX(0px);
+}
+to {
+  transform:  translateX(-100%);
+}
+}
