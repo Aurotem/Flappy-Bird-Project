@@ -3,8 +3,10 @@ const bird = document.getElementById("bird");
 
 //! Game-overlay
 const scenery = document.getElementById("game-overlay");
+
 //* Console.log shortcut for monitoring
 const cl = console.log.bind(console);
+
 
 //! Create Ground
 const ground = document.createElement("div");
@@ -72,7 +74,7 @@ function createItems() {
         if (itemsPos >= 256 && itemsPos <= 300) {
           if (bird) playerPass = true;
           if (playerPass) {
-            SCORE += 5;
+            SCORE += 1;
             playerPass = false;
           }
           Array.from(String(SCORE)).forEach((e) => {
