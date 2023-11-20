@@ -7,7 +7,6 @@ const scenery = document.getElementById("game-overlay");
 //* Console.log shortcut for monitoring
 const cl = console.log.bind(console);
 
-
 //! Create Ground
 const ground = document.createElement("div");
 const ground2 = document.createElement("div");
@@ -38,26 +37,27 @@ function createItems() {
   ground3.classList.add("ground-animation");
   bird.classList.add("bird-animation");
 
-  //! Random number for generating pipes.
-  const randomPos = Math.random() * (372 - 132) + 132;
-
-  //*Create Elements
-  const pipe = document.createElement("div");
-  const pipe2 = document.createElement("div");
-
-  //* Adding items their CSS class
-  pipe2.classList.add("pipe");
-  pipe.classList.add("pipe");
-
-  //* Randomly Generate pipes
-  pipe2.style.transform = `translate(0px,${randomPos - 420}px) rotate(180deg)`;
-  pipe.style.transform = `translate(0px,${randomPos}px)`;
-
-  //* Making elements visible
-  scenery.appendChild(pipe);
-  scenery.appendChild(pipe2);
-
   if (gameRun) {
+    score.style.visibility = "visible";
+    //! Random number for generating pipes.
+    const randomPos = Math.random() * (372 - 132) + 132;
+
+    //*Create Elements
+    const pipe = document.createElement("div");
+    const pipe2 = document.createElement("div");
+
+    //* Adding items their CSS class
+    pipe2.classList.add("pipe");
+    pipe.classList.add("pipe");
+
+    //* Randomly Generate pipes
+    pipe2.style.top = randomPos - 420 + 'px';
+    pipe2.style.transform =  "rotate(180deg)";
+    pipe.style.top = randomPos + 'px';
+
+    //* Making elements visible
+    scenery.appendChild(pipe);
+    scenery.appendChild(pipe2);
     let itemsPos = -100;
     let playerPass = false;
     const moveItems = setInterval(() => {
@@ -77,12 +77,11 @@ function createItems() {
             SCORE += 1;
             playerPass = false;
           }
+          Array.from(String(SCORE)).forEach((e) =>
+            score.firstChild != null ? score.firstChild.remove() : false
+          );
           Array.from(String(SCORE)).forEach((e) => {
-                let clearAble = false;
             const img = document.createElement("img");
-            if (score.childElementCount != 0) {
-              score.removeChild(score.lastChild);
-            }
             img.classList.add("score-img");
             img.src = `./images/${e}.png`;
             score.appendChild(img);
@@ -92,6 +91,8 @@ function createItems() {
     }, 500);
   }
 }
+
+createItems();
 
 const createItemsInterval = setInterval(createItems, 2000);
 
@@ -122,6 +123,9 @@ function moveBird() {
     }
   }
 }
+
+
+
 
 //! Bird Jump Inputs
 window.addEventListener("click", () => (gameRun ? birdJump() : activateGame()));

@@ -14,31 +14,36 @@ body {
   overflow: hidden;
 }
 #game-start {
-  background: url('./images/message.png');
+  background: url("./images/message.png");
   position: absolute;
   height: 168px;
   width: 184px;
   top: 20%;
   left: 50%;
-  transform: translate(-50%,-50%);
+  transform: translate(-50%, -50%);
   z-index: 10;
 }
 #game-over {
   position: absolute;
   top: 30%;
   left: 50%;
-  transform: translate(-50%,-50%);
-  background: url('./images/gameover.png');
+  transform: translate(-50%, -50%);
+  background: url("./images/gameover.png");
   width: 192px;
   height: 42px;
   z-index: 10;
   display: none;
 }
 #SCORE {
+  z-index: 10;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
   color: white;
   position: absolute;
   top: 50px;
   left: 50%;
+  visibility: hidden;
 }
 #game-overlay {
   position: relative;
