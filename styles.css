@@ -97,7 +97,7 @@ body {
   height: 320px;
   width: 52px;
   background: url("./images/pipe-green.png");
-  transition: 0.6s linear;
+  
 }
 .ground {
   position: absolute;
