@@ -67,6 +67,7 @@ body {
   background: url(./images/yellowbird-downflap.png) no-repeat;
   background-size: cover;
   transition: transform 0.05s linear;
+  z-index: 10;
 }
 
 .bird-animation {
