@@ -39,7 +39,6 @@ function createItems() {
   ground2.classList.add("ground-animation");
   ground3.classList.add("ground-animation");
   bird.classList.add("bird-animation");
-
   if (gameRun) {
     score.style.visibility = "visible";
     gameStart.style.display = "none";
@@ -93,19 +92,23 @@ function createItems() {
             birdFall();
           }
 
-          Array.from(String(SCORE)).forEach(() =>
-            score.firstChild != null ? score.firstChild.remove() : false
-          );
-          Array.from(String(SCORE)).forEach((e) => {
-            const img = document.createElement("img");
-            img.classList.add("score-img");
-            img.src = `./images/${e}.png`;
-            score.appendChild(img);
-          });
+          scoreCalculate(SCORE);
         }
       }
     }, 10);
   }
+}
+
+function scoreCalculate(SCORE) {
+  Array.from(String(SCORE)).forEach(() =>
+    score.firstChild != null ? score.firstChild.remove() : false
+  );
+  Array.from(String(SCORE)).forEach((e) => {
+    const img = document.createElement("img");
+    img.classList.add("score-img");
+    img.src = `./images/${e}.png`;
+    score.appendChild(img);
+  });
 }
 
 //? Start Game

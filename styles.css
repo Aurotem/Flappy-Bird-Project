@@ -1,8 +1,12 @@
+/*! Font Family */
+@import url("https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;500;600;700&family=Roboto:ital,wght@0,100;0,300;0,400;0,900;1,100;1,300&display=swap");
+
 /* Reset Values */
 * {
   margin: 0px;
   padding: 0px;
   box-sizing: border-box;
+  font-family: 'Pixelify Sans', sans-serif;
 }
 body {
   background: rgb(76, 193, 203);
@@ -42,6 +46,13 @@ body {
   background-color: rgb(255, 227, 194);
   border-radius: 5px;
 }
+.score-panel {
+  height: 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 24px;
+}
 #SCORE {
   z-index: 10;
   user-select: none;
@@ -70,7 +81,7 @@ body {
   background: rgba(255, 255, 255, 1);
   opacity: 100;
   display: none;
-  transition: .4s linear;
+  transition: 0.4s linear;
 }
 .score-img {
   width: 24px;
