@@ -103,12 +103,14 @@ function createItems() {
     let playerPass = false;
     const moveItems = setInterval(() => {
       if (gameRun) {
-        let birdPos = bird.style.top.replace("px", "");
-        let pipePos = pipe.style.top.replace("px", "");
-        let pipe2Pos = pipe2.style.top.replace("px", "");
-        cl("Top pipe: " + (Number(pipe2Pos) + 320));
+        let birdPos = Number(bird.style.top.replace("px", ""));
+        let pipePos = Number(pipe.style.top.replace("px", ""));
+        let pipe2Pos = Number(pipe2.style.top.replace("px", ""));
+
+        cl("Top pipe: " + (pipe2Pos + 320));
         cl("Bird: " + birdPos);
-        cl("Bottom pipe:" + pipePos);
+        cl("Bottom pipe:" + (pipePos - 50));
+
         pipe.style.right = itemsPos + "px";
         pipe2.style.right = itemsPos + "px";
         monitor.style.right = itemsPos + "px";
@@ -121,14 +123,14 @@ function createItems() {
           clearInterval(moveItems);
         }
         if (!playerPass && itemsPos >= 154 && itemsPos <= 222) {
-          if (birdPos < pipePos && birdPos > Number(pipe2Pos) + 320) {
-            cl('pass')
+          if (birdPos < pipePos && birdPos > pipe2Pos + 320) {
+            cl("pass");
             playerPass = true;
             if (playerPass) {
               SCORE += 1;
             }
           } else {
-            cl('fall')
+            cl("fall");
             birdFall();
           }
 
