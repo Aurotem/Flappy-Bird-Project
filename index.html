@@ -3,23 +3,31 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Flappy Bird</title>
+    <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />
 
     <!--! Style Links  -->
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
     <section id="game-overlay">
-      <div id="SCORE" draggable="false"><img src="./images/0.png" alt="score" class="score-img"></div>
+      <div id="SCORE" draggable="false">
+        <img src="./images/0.png" alt="score" class="score-img" />
+      </div>
       <div id="game-start"></div>
       <div id="game-over">
-        
+        <div class="game-over-panel">
+          <p>Score:</p>
+          <p>HighScore:</p>
+        </div>
       </div>
       <div id="bird"></div>
-
+      <div id="filter"></div>
     </section>
 
     <!--! Script  -->
+
     <script src="./script.js"></script>
+    <script src="./monitor.js"></script>
   </body>
 </html>

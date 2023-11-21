@@ -4,6 +4,9 @@ const bird = document.getElementById("bird");
 //! Game-overlay
 const scenery = document.getElementById("game-overlay");
 
+//! Filter in gameOver scene
+const filter = document.getElementById("filter");
+
 //* Console.log shortcut for monitoring
 const cl = console.log.bind(console);
 
@@ -61,43 +64,7 @@ function createItems() {
     scenery.appendChild(pipe);
     scenery.appendChild(pipe2);
 
-    //? MONITOR
-    let pipeMon = pipe.style.top.replace("px", "");
-    let pipe2Mon = pipe2.style.top.replace("px", "");
-    const monitor = document.createElement("div");
-    const monitor2 = document.createElement("div");
-    monitor.style.right = "0px";
-    monitor2.style.right = "0px";
-    monitor.id = "monitor";
-    monitor2.id = "monitor2";
-    monitor.style.top = pipeMon + "px";
-    monitor2.style.top = Number(pipe2Mon) + 320 + "px";
-    monitor.style.position = "absolute";
-    monitor2.style.position = "absolute";
-    monitor.style.background = "red";
-    monitor.style.height = "5px";
-    monitor.style.width = "50px";
-    monitor2.style.background = "red";
-    monitor2.style.height = "5px";
-    monitor2.style.width = "50px";
-    scenery.append(monitor2);
-    scenery.append(monitor);
-
-    const monitor3 = document.createElement("div");
-    const monitor4 = document.createElement("div");
-    monitor3.style.height = "100%";
-    monitor3.style.width = "10px";
-    monitor4.style.height = "100%";
-    monitor4.style.width = "10px";
-    monitor3.style.right = "222px";
-    monitor4.style.right = "154px";
-    monitor3.style.background = "red";
-    monitor4.style.background = "red";
-    monitor3.style.position = "absolute";
-    monitor4.style.position = "absolute";
-    scenery.append(monitor3);
-    scenery.append(monitor4);
-    //? MONITOR
+    //monitorScript(pipe, pipe2);
 
     let itemsPos = -100;
     let playerPass = false;
@@ -107,14 +74,8 @@ function createItems() {
         let pipePos = Number(pipe.style.top.replace("px", ""));
         let pipe2Pos = Number(pipe2.style.top.replace("px", ""));
 
-        cl("Top pipe: " + (pipe2Pos + 320));
-        cl("Bird: " + birdPos);
-        cl("Bottom pipe:" + (pipePos - 50));
-
         pipe.style.right = itemsPos + "px";
         pipe2.style.right = itemsPos + "px";
-        monitor.style.right = itemsPos + "px";
-        monitor2.style.right = itemsPos + "px";
         itemsPos += 1;
 
         if (itemsPos > 512) {
@@ -124,17 +85,15 @@ function createItems() {
         }
         if (!playerPass && itemsPos >= 154 && itemsPos <= 222) {
           if (birdPos < pipePos && birdPos > pipe2Pos + 320) {
-            cl("pass");
             playerPass = true;
             if (playerPass) {
               SCORE += 1;
             }
           } else {
-            cl("fall");
             birdFall();
           }
 
-          Array.from(String(SCORE)).forEach((e) =>
+          Array.from(String(SCORE)).forEach(() =>
             score.firstChild != null ? score.firstChild.remove() : false
           );
           Array.from(String(SCORE)).forEach((e) => {
@@ -149,10 +108,11 @@ function createItems() {
   }
 }
 
+//? Start Game
 createItems();
-
 const createItemsInterval = setInterval(createItems, 2000);
 
+//TODO Jump Handling Area
 let birdStart = 200;
 let birdMoveTo = 0;
 function moveBird() {
@@ -171,9 +131,8 @@ function moveBird() {
     }
   }
 }
-
+//! ------------Ground hit handler--------------
 function birdFall() {
-  //! ------------Ground hit handler--------------
   clearInterval(createItemsInterval); //* Stops the generation of the pipes.
   gameRun = false; //* Stops the movement of the pipes.
   //*Deactivating animations
@@ -182,6 +141,23 @@ function birdFall() {
   ground3.classList.remove("ground-animation");
   bird.classList.remove("bird-animation");
   gameOver.style.display = "block";
+  bird.style.transform = "rotate(55deg)";
+  window.removeEventListener("click", moveBird);
+  filter.style.display = "flex";
+  filter.style.opacity = "0";
+  gameOverFn();
+  clearInterval(birdJumpInterval);
+}
+
+function gameOverFn() {
+  const birdFallInterval = setInterval(() => {
+    let birdTop = Number(bird.style.top.replace("px", ""));
+    if (birdTop < 400) {
+      bird.style.top = birdTop + 6 + "px";
+    } else {
+      clearInterval(birdFallInterval);
+    }
+  }, 10);
 }
 
 //! Bird Jump Inputs
@@ -196,4 +172,4 @@ function activateGame() {
   birdJump();
 }
 
-setInterval(moveBird, 20);
+const birdJumpInterval = setInterval(moveBird, 20);
