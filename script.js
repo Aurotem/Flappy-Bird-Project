@@ -100,6 +100,8 @@ function birdFall() {
   clearInterval(createItemsInterval); //* Stops the generation of the pipes.
   gameRun = false; //* Stops the movement of the pipes.
 
+  gameStart.style.display = 'none';
+
   setStorage();
 
   //*Deactivating animations
