@@ -10,18 +10,10 @@ const filter = document.getElementById("filter");
 //* Console.log shortcut for monitoring
 const cl = console.log.bind(console);
 
-//! Create Ground
-const ground = document.createElement("div");
-const ground2 = document.createElement("div");
-const ground3 = document.createElement("div");
-ground.classList.add("ground");
-ground2.classList.add("ground");
-ground3.classList.add("ground");
-ground2.style.left = "335px";
-ground3.style.left = "670px";
-scene.appendChild(ground);
-scene.appendChild(ground2);
-scene.appendChild(ground3);
+//! Ground
+const ground = document.getElementById("ground");
+const ground2 = document.getElementById("ground2");
+const ground3 = document.getElementById("ground3");
 
 //! Game Start & Game Stop Signs
 const gameStart = document.getElementById("game-start");
@@ -118,8 +110,7 @@ function birdFall() {
   gameOver.style.display = "block";
   bird.style.transform = "rotate(55deg)";
   document.removeEventListener("click", clickListenerFn);
-  filter.style.display = "flex";
-  filter.style.opacity = "0";
+
   gameOverFn();
   clearInterval(birdJumpInterval);
   scoreCalculate(SCORE, showScore);
@@ -142,35 +133,45 @@ function setStorage() {
 //! ------------------- Reset Game Button -------------------------
 
 function resetGame() {
-  rePlayButton.removeEventListener("click", resetGame);
-  scene.innerHTML = `<div id="SCORE" draggable="false">
-  <img src="./images/0.png" alt="score" class="score-img" />
-</div>
-<div id="game-start"></div>
-<div id="game-over">
-  <div class="game-over-panel">
-    <div class="score-panel">
-      <p>SCORE:</p>
-      <div id="show-score" class="score"><img src="./images/0.png" alt="score" class="score-img" /></div>
-    </div>
-    <div class="score-panel">
-      <p>HIGHSCORE:</p>
-      <div id="show-high-score" class="high-score"></div>
-    </div>
-    <button id="re-play">PLAY AGAIN</button>
-  </div>
-</div>
-<div id="bird"></div>
-<div id="filter"></div>`;
-  SCORE = 0;
-  gameOver.style.display = "none";
+//   scene.innerHTML = `<div id="SCORE" draggable="false">
+//   <img src="./images/0.png" alt="score" class="score-img" />
+// </div>
+// <div id="game-start"></div>
+// <div id="game-over">
+//   <div class="game-over-panel">
+//     <div class="score-panel">
+//       <p>SCORE:</p>
+//       <div id="show-score" class="score"></div>
+//     </div>
+//     <div class="score-panel">
+//       <p>HIGHSCORE:</p>
+//       <div id="show-high-score" class="high-score"></div>
+//     </div>
+//     <button id="re-play">PLAY AGAIN</button>
+//   </div>
+// </div>
+// <div id="bird"></div>
+// <div id="filter"></div>
+// <div id="ground" class="ground"></div>
+// <div id="ground2" class="ground" style="left: 335px;"></div>
+// <div id="ground3" class="ground" style="left: 670px;"></div>`;
+//   SCORE = 0;
+//   gameOver.style.display = "none";
+//   ground.classList.add("ground-animation");
+//   ground2.classList.add("ground-animation");
+//   ground3.classList.add("ground-animation");
+//   bird.classList.add("bird-animation");
 
-  bird.style.top = birdStart + "px";
-  cl(bird.style.top);
-  cl(gameRun);
-  cl(SCORE);
-  setInterval(createItemsInterval);
-  gameRun = true;
+//   bird.style.top = "200px";
+//   birdStart = 200;
+//   birdMoveTo = 0;
+//   const createItemsInterval = setInterval(createItems, 2000);
+//   const birdJumpInterval = setInterval(moveBird, 20);
+//   gameRun = true;
+//   rePlayButton.removeEventListener("click", resetGame);
+//   document.addEventListener("click", clickListenerFn);
+
+location.reload();
 }
 
 //! ------------------- Reset Game Button -------------------------
