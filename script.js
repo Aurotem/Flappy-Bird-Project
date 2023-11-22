@@ -2,7 +2,7 @@
 const bird = document.getElementById("bird");
 
 //! Game-overlay
-const scene= document.getElementById("game-overlay");
+const scene = document.getElementById("game-overlay");
 
 //! Filter in gameOver scene
 const filter = document.getElementById("filter");
@@ -26,12 +26,15 @@ scene.appendChild(ground3);
 //! Game Start & Game Stop Signs
 const gameStart = document.getElementById("game-start");
 const gameOver = document.getElementById("game-over");
+const rePlayButton = document.getElementById("re-play");
 
 //! ------------------PLAYER SCORE---------------------
 let SCORE = 0;
 const score = document.getElementById("SCORE");
 const showScore = document.getElementById("show-score");
 const showHighScore = document.getElementById("show-high-score");
+
+setStorage(); //! Get HighScore in the beginning
 
 //TODO -------------------------START GAME----------------------------------------
 let gameRun = false;
@@ -105,6 +108,8 @@ function birdFall() {
   clearInterval(createItemsInterval); //* Stops the generation of the pipes.
   gameRun = false; //* Stops the movement of the pipes.
 
+  setStorage();
+
   //*Deactivating animations
   ground.classList.remove("ground-animation");
   ground2.classList.remove("ground-animation");
@@ -112,28 +117,60 @@ function birdFall() {
   bird.classList.remove("bird-animation");
   gameOver.style.display = "block";
   bird.style.transform = "rotate(55deg)";
-  window.removeEventListener("click", () => (gameRun ? birdJump() : activateGame()));
+  document.removeEventListener("click", clickListenerFn);
   filter.style.display = "flex";
   filter.style.opacity = "0";
   gameOverFn();
   clearInterval(birdJumpInterval);
   scoreCalculate(SCORE, showScore);
+  rePlayButton.addEventListener("click", resetGame);
 }
 //! ---------------GameOver handler-----------------
+
+//! ------------------- Saving score to Local Storage -----------------------
+function setStorage() {
+  let storeScore = localStorage.getItem("highScore");
+  if (SCORE > storeScore || localStorage.getItem("highScore") == undefined) {
+    localStorage.setItem("highScore", JSON.stringify(SCORE));
+  }
+
+  storeScore = localStorage.getItem("highScore");
+
+  scoreCalculate(storeScore, showHighScore);
+}
 
 //! ------------------- Reset Game Button -------------------------
 
 function resetGame() {
-  score.innerHTML = '<img src="./images/0.png" alt="score" class="score-img" />'
-  Array.from(scene.children).forEach(e => {
-    e.remove();
-  })
+  rePlayButton.removeEventListener("click", resetGame);
+  scene.innerHTML = `<div id="SCORE" draggable="false">
+  <img src="./images/0.png" alt="score" class="score-img" />
+</div>
+<div id="game-start"></div>
+<div id="game-over">
+  <div class="game-over-panel">
+    <div class="score-panel">
+      <p>SCORE:</p>
+      <div id="show-score" class="score"><img src="./images/0.png" alt="score" class="score-img" /></div>
+    </div>
+    <div class="score-panel">
+      <p>HIGHSCORE:</p>
+      <div id="show-high-score" class="high-score"></div>
+    </div>
+    <button id="re-play">PLAY AGAIN</button>
+  </div>
+</div>
+<div id="bird"></div>
+<div id="filter"></div>`;
   SCORE = 0;
-  gameRun = true;
-  gameOver.style.display= 'none';
-  setInterval(createItemsInterval);
-  bird.style.top = birdStart;
+  gameOver.style.display = "none";
 
+  bird.style.top = birdStart + "px";
+  cl(bird.style.top);
+  cl(gameRun);
+  cl(SCORE);
+  setInterval(createItemsInterval);
+  gameRun = true;
 }
 
 //! ------------------- Reset Game Button -------------------------
@@ -175,9 +212,9 @@ function moveBird() {
     }
   }
 }
-
+const clickListenerFn = () => (gameRun ? birdJump() : activateGame());
 //* Bird Jump Inputs
-window.addEventListener("click", () => (gameRun ? birdJump() : activateGame()));
+document.addEventListener("click", clickListenerFn);
 
 //*Jump function
 function birdJump() {
@@ -203,8 +240,3 @@ function gameOverFn() {
   }, 10);
 }
 //TODO -------------- Bird Falling in the end of the game -------------------
-
-
-//! ------------------- Saving score to Local Storage -----------------------
-
-
