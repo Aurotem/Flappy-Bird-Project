@@ -2,7 +2,7 @@
 const bird = document.getElementById("bird");
 
 //! Game-overlay
-const scenery = document.getElementById("game-overlay");
+const scene= document.getElementById("game-overlay");
 
 //! Filter in gameOver scene
 const filter = document.getElementById("filter");
@@ -19,9 +19,9 @@ ground2.classList.add("ground");
 ground3.classList.add("ground");
 ground2.style.left = "335px";
 ground3.style.left = "670px";
-scenery.appendChild(ground);
-scenery.appendChild(ground2);
-scenery.appendChild(ground3);
+scene.appendChild(ground);
+scene.appendChild(ground2);
+scene.appendChild(ground3);
 
 //! Game Start & Game Stop Signs
 const gameStart = document.getElementById("game-start");
@@ -30,6 +30,8 @@ const gameOver = document.getElementById("game-over");
 //! ------------------PLAYER SCORE---------------------
 let SCORE = 0;
 const score = document.getElementById("SCORE");
+const showScore = document.getElementById("show-score");
+const showHighScore = document.getElementById("show-high-score");
 
 //TODO -------------------------START GAME----------------------------------------
 let gameRun = false;
@@ -60,8 +62,8 @@ function createItems() {
     pipe.style.top = randomPos + "px";
 
     //* Making elements visible
-    scenery.appendChild(pipe);
-    scenery.appendChild(pipe2);
+    scene.appendChild(pipe);
+    scene.appendChild(pipe2);
 
     //monitorScript(pipe, pipe2);
 
@@ -91,31 +93,70 @@ function createItems() {
           } else {
             birdFall();
           }
-
-          scoreCalculate(SCORE);
+          scoreCalculate(SCORE, score);
         }
       }
     }, 10);
   }
 }
 
-function scoreCalculate(SCORE) {
-  Array.from(String(SCORE)).forEach(() =>
-    score.firstChild != null ? score.firstChild.remove() : false
-  );
+//! ------------GameOver handler--------------
+function birdFall() {
+  clearInterval(createItemsInterval); //* Stops the generation of the pipes.
+  gameRun = false; //* Stops the movement of the pipes.
+
+  //*Deactivating animations
+  ground.classList.remove("ground-animation");
+  ground2.classList.remove("ground-animation");
+  ground3.classList.remove("ground-animation");
+  bird.classList.remove("bird-animation");
+  gameOver.style.display = "block";
+  bird.style.transform = "rotate(55deg)";
+  window.removeEventListener("click", () => (gameRun ? birdJump() : activateGame()));
+  filter.style.display = "flex";
+  filter.style.opacity = "0";
+  gameOverFn();
+  clearInterval(birdJumpInterval);
+  scoreCalculate(SCORE, showScore);
+}
+//! ---------------GameOver handler-----------------
+
+//! ------------------- Reset Game Button -------------------------
+
+function resetGame() {
+  score.innerHTML = '<img src="./images/0.png" alt="score" class="score-img" />'
+  Array.from(scene.children).forEach(e => {
+    e.remove();
+  })
+  SCORE = 0;
+  gameRun = true;
+  gameOver.style.display= 'none';
+  setInterval(createItemsInterval);
+  bird.style.top = birdStart;
+
+}
+
+//! ------------------- Reset Game Button -------------------------
+
+//! ---------------- Calculate Score -----------------
+function scoreCalculate(SCORE, x) {
+  Array.from(x.children).forEach((e) => {
+    e.remove();
+  });
   Array.from(String(SCORE)).forEach((e) => {
     const img = document.createElement("img");
     img.classList.add("score-img");
     img.src = `./images/${e}.png`;
-    score.appendChild(img);
+    x.appendChild(img);
   });
 }
+//! ---------------- Calculate Score -----------------
 
 //? Start Game
 createItems();
 const createItemsInterval = setInterval(createItems, 2000);
 
-//TODO Jump Handling Area
+//TODO ----------------Jump Handling Area----------------
 let birdStart = 200;
 let birdMoveTo = 0;
 function moveBird() {
@@ -134,36 +175,8 @@ function moveBird() {
     }
   }
 }
-//! ------------Ground hit handler--------------
-function birdFall() {
-  clearInterval(createItemsInterval); //* Stops the generation of the pipes.
-  gameRun = false; //* Stops the movement of the pipes.
-  //*Deactivating animations
-  ground.classList.remove("ground-animation");
-  ground2.classList.remove("ground-animation");
-  ground3.classList.remove("ground-animation");
-  bird.classList.remove("bird-animation");
-  gameOver.style.display = "block";
-  bird.style.transform = "rotate(55deg)";
-  window.removeEventListener("click", moveBird);
-  filter.style.display = "flex";
-  filter.style.opacity = "0";
-  gameOverFn();
-  clearInterval(birdJumpInterval);
-}
 
-function gameOverFn() {
-  const birdFallInterval = setInterval(() => {
-    let birdTop = Number(bird.style.top.replace("px", ""));
-    if (birdTop < 400) {
-      bird.style.top = birdTop + 6 + "px";
-    } else {
-      clearInterval(birdFallInterval);
-    }
-  }, 10);
-}
-
-//! Bird Jump Inputs
+//* Bird Jump Inputs
 window.addEventListener("click", () => (gameRun ? birdJump() : activateGame()));
 
 //*Jump function
@@ -175,4 +188,23 @@ function activateGame() {
   birdJump();
 }
 
-const birdJumpInterval = setInterval(moveBird, 20);
+const birdJumpInterval = setInterval(moveBird, 20); //* Gravity
+//TODO ----------------Jump Handling Area----------------
+
+//TODO -------------- Bird Falling in the end of the game -------------------
+function gameOverFn() {
+  const birdFallInterval = setInterval(() => {
+    let birdTop = Number(bird.style.top.replace("px", ""));
+    if (birdTop < 400) {
+      bird.style.top = birdTop + 6 + "px";
+    } else {
+      clearInterval(birdFallInterval);
+    }
+  }, 10);
+}
+//TODO -------------- Bird Falling in the end of the game -------------------
+
+
+//! ------------------- Saving score to Local Storage -----------------------
+
+

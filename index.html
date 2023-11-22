@@ -19,12 +19,13 @@
         <div class="game-over-panel">
           <div class="score-panel">
             <p>SCORE:</p>
-            <div class="score"></div>
+            <div id="show-score" class="score"><img src="./images/0.png" alt="score" class="score-img" /></div>
           </div>
           <div class="score-panel">
             <p>HIGHSCORE:</p>
-            <div class="high-score"></div>
+            <div id="show-high-score" class="high-score"></div>
           </div>
+          <button onclick="resetGame()">PLAY AGAIN</button>
         </div>
       </div>
       <div id="bird"></div>
@@ -32,7 +33,6 @@
     </section>
 
     <!--! Script  -->
-
     <script src="./script.js"></script>
     <script src="./monitor.js"></script>
   </body>
